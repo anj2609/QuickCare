@@ -9,6 +9,7 @@ import '../services/document_service.dart';
 import 'book_tab.dart';
 import 'health_tab.dart';
 import 'starting_screen.dart';
+import '../widgets/ai_chat_overlay.dart';
 
 const _kBg = Color(0xFFF0F4F8);
 const _kPrimary = Color(0xFF2CB8C7);
@@ -122,7 +123,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: _kBg,
-      body: tabs[_idx],
+      body: Stack(
+        children: [
+          tabs[_idx],
+          if (_idx == 0) AiChatOverlay(userName: _userName),
+        ],
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _idx,
         onDestinationSelected: (i) => setState(() => _idx = i),
