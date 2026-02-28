@@ -92,14 +92,17 @@ class _AuthScreenState extends State<AuthScreen> {
       backgroundColor: _kBg,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: hPad, vertical: 24),
+          padding: EdgeInsets.symmetric(
+            horizontal: hPad,
+            vertical: (sw * 0.06).clamp(16.0, 32.0),
+          ),
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _Logo(),
-                const SizedBox(height: 28),
+                const _Logo(),
+                SizedBox(height: (sw * 0.07).clamp(20.0, 32.0)),
                 Text(
                   'Create account',
                   style: TextStyle(
@@ -113,7 +116,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   'Step 1 of 3 · Enter your details',
                   style: TextStyle(fontSize: subtitleFs, color: _kGrey),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: (sw * 0.06).clamp(16.0, 24.0)),
 
                 _FieldLabel('Full Name'),
                 const SizedBox(height: 6),
@@ -266,32 +269,49 @@ class _AuthScreenState extends State<AuthScreen> {
 
 // ── Shared widgets ────────────────────────────────────────────────────────────
 class _Logo extends StatelessWidget {
+  const _Logo();
   @override
   Widget build(BuildContext context) {
+    final sw = MediaQuery.of(context).size.width;
+    final size = (sw * 0.11).clamp(38.0, 48.0);
+    final fontSize = (sw * 0.045).clamp(16.0, 19.0);
+
     return Row(
       children: [
         Container(
-          width: 36,
-          height: 36,
+          width: size,
+          height: size,
           decoration: BoxDecoration(
-            gradient: const LinearGradient(colors: [_kPrimary, _kPrimaryDark]),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(size * 0.26),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-          child: const Icon(Icons.favorite, color: Colors.white, size: 18),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(size * 0.26),
+            child: Image.asset(
+              'assets/logo_without_text.jpeg',
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
         const SizedBox(width: 8),
-        const Text(
+        Text(
           'QuickCare',
           style: TextStyle(
-            fontSize: 17,
+            fontSize: fontSize,
             fontWeight: FontWeight.bold,
             color: _kNavy,
           ),
         ),
-        const Text(
+        Text(
           ' AI',
           style: TextStyle(
-            fontSize: 17,
+            fontSize: fontSize,
             fontWeight: FontWeight.w400,
             color: _kPrimary,
           ),

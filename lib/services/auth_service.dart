@@ -63,7 +63,7 @@ class AuthService {
 
   /// Step 3 — complete profile (protected).
   static Future<void> step3(Map<String, dynamic> payload) async {
-    final response = await ApiConfig.put(
+    final response = await ApiConfig.patch(
       '/users/onboarding/patient/step3/',
       headers: await ApiConfig.authHeaders(),
       body: jsonEncode(payload),

@@ -30,13 +30,10 @@ class DoctorService {
       '/doctors/$qs',
       headers: ApiConfig.jsonHeaders,
     );
-    final data = ApiConfig.handleResponse(r);
-    if (data is List) {
-      return data
-          .map((e) => DoctorModel.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    return [];
+    final data = ApiConfig.ensureList(ApiConfig.handleResponse(r));
+    return data
+        .map((e) => DoctorModel.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   /// GET /doctors/<id>/
@@ -58,13 +55,10 @@ class DoctorService {
       '/doctors/$doctorId/availability/',
       headers: ApiConfig.jsonHeaders,
     );
-    final data = ApiConfig.handleResponse(r);
-    if (data is List) {
-      return data
-          .map((e) => DoctorAvailability.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    return [];
+    final data = ApiConfig.ensureList(ApiConfig.handleResponse(r));
+    return data
+        .map((e) => DoctorAvailability.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   /// GET /doctors/<id>/availability/slots/?date=...&clinic_id=...

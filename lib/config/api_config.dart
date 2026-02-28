@@ -109,6 +109,18 @@ class ApiConfig {
     throw ApiException(msg, response.statusCode);
   }
 
+  /// Extracts a [List] from the given data.
+  /// If [data] is a [Map] containing a "results" key (DRF pagination), it returns the results.
+  /// If [data] is already a [List], it returns it as is.
+  /// Otherwise, it returns an empty [List].
+  static List<dynamic> ensureList(dynamic data) {
+    if (data is List) return data;
+    if (data is Map && data.containsKey('results') && data['results'] is List) {
+      return data['results'] as List<dynamic>;
+    }
+    return [];
+  }
+
   // ── Convenience HTTP methods (with timeout + logging) ──────────────────────
   static Future<http.Response> get(
     String path, {

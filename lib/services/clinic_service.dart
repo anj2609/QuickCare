@@ -22,13 +22,10 @@ class ClinicService {
       '/clinics/public/$qs',
       headers: ApiConfig.jsonHeaders,
     );
-    final data = ApiConfig.handleResponse(r);
-    if (data is List) {
-      return data
-          .map((e) => ClinicModel.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    return [];
+    final data = ApiConfig.ensureList(ApiConfig.handleResponse(r));
+    return data
+        .map((e) => ClinicModel.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   /// GET /clinics/<id>/
@@ -48,12 +45,9 @@ class ClinicService {
       '/clinics/$clinicId/slots/',
       headers: ApiConfig.jsonHeaders,
     );
-    final data = ApiConfig.handleResponse(r);
-    if (data is List) {
-      return data
-          .map((e) => TimeSlotModel.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    return [];
+    final data = ApiConfig.ensureList(ApiConfig.handleResponse(r));
+    return data
+        .map((e) => TimeSlotModel.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 }

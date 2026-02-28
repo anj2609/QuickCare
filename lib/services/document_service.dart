@@ -16,13 +16,10 @@ class DocumentService {
       '/documents/$qs',
       headers: await ApiConfig.authHeaders(),
     );
-    final data = ApiConfig.handleResponse(r);
-    if (data is List) {
-      return data
-          .map((e) => DocumentModel.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    return [];
+    final data = ApiConfig.ensureList(ApiConfig.handleResponse(r));
+    return data
+        .map((e) => DocumentModel.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   /// POST /documents/ (multipart/form-data)
@@ -83,13 +80,10 @@ class DocumentService {
       '/documents/consent/mine/$qs',
       headers: await ApiConfig.authHeaders(),
     );
-    final data = ApiConfig.handleResponse(r);
-    if (data is List) {
-      return data
-          .map((e) => ConsentRequest.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    return [];
+    final data = ApiConfig.ensureList(ApiConfig.handleResponse(r));
+    return data
+        .map((e) => ConsentRequest.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   /// PATCH /documents/consent/<id>/action/  — grant | reject | revoke
@@ -116,12 +110,9 @@ class DocumentService {
         ? '/documents/$documentId/access-log/'
         : '/documents/access-log/';
     final r = await ApiConfig.get(path, headers: await ApiConfig.authHeaders());
-    final data = ApiConfig.handleResponse(r);
-    if (data is List) {
-      return data
-          .map((e) => AccessLogEntry.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    return [];
+    final data = ApiConfig.ensureList(ApiConfig.handleResponse(r));
+    return data
+        .map((e) => AccessLogEntry.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 }

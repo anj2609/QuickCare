@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import '../config/api_config.dart';
 import '../models/appointment.dart';
 
@@ -13,13 +14,10 @@ class AppointmentService {
       '/appointments/my/$qs',
       headers: await ApiConfig.authHeaders(),
     );
-    final data = ApiConfig.handleResponse(r);
-    if (data is List) {
-      return data
-          .map((e) => Appointment.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    return [];
+    final data = ApiConfig.ensureList(ApiConfig.handleResponse(r));
+    return data
+        .map((e) => Appointment.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   /// POST /appointments/my/
@@ -74,15 +72,18 @@ class AppointmentService {
   /// GET /appointments/my/clinics/
   /// Lists all clinics the patient has appointments at.
   static Future<List<Map<String, dynamic>>> listMyClinics() async {
-    final r = await ApiConfig.get(
-      '/appointments/my/clinics/',
-      headers: await ApiConfig.authHeaders(),
-    );
-    final data = ApiConfig.handleResponse(r);
-    if (data is List) {
+    try {
+      final r = await ApiConfig.get(
+        '/appointments/my/clinics/',
+        headers: await ApiConfig.authHeaders(),
+      );
+      final data = ApiConfig.ensureList(ApiConfig.handleResponse(r));
       return data.cast<Map<String, dynamic>>();
+    } catch (e) {
+      // Gracefully handle 404 if patient has no associated clinics yet
+      debugPrint('ℹ️ Handled listMyClinics error: $e');
+      return [];
     }
-    return [];
   }
 
   /// GET /appointments/my/clinics/<clinic_id>/admission-docs/
@@ -90,14 +91,16 @@ class AppointmentService {
   static Future<List<Map<String, dynamic>>> getAdmissionDocs(
     String clinicId,
   ) async {
-    final r = await ApiConfig.get(
-      '/appointments/my/clinics/$clinicId/admission-docs/',
-      headers: await ApiConfig.authHeaders(),
-    );
-    final data = ApiConfig.handleResponse(r);
-    if (data is List) {
+    try {
+      final r = await ApiConfig.get(
+        '/appointments/my/clinics/$clinicId/admission-docs/',
+        headers: await ApiConfig.authHeaders(),
+      );
+      final data = ApiConfig.ensureList(ApiConfig.handleResponse(r));
       return data.cast<Map<String, dynamic>>();
+    } catch (e) {
+      debugPrint('ℹ️ Handled getAdmissionDocs error: $e');
+      return [];
     }
-    return [];
   }
 }

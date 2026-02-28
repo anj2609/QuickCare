@@ -89,7 +89,10 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: _kBg,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: hPad, vertical: 24),
+          padding: EdgeInsets.symmetric(
+            horizontal: hPad,
+            vertical: (sw * 0.06).clamp(16.0, 32.0),
+          ),
           child: Form(
             key: _formKey,
             child: Column(
@@ -101,56 +104,62 @@ class _LoginScreenState extends State<LoginScreen> {
                     GestureDetector(
                       onTap: () => Navigator.of(context).pop(),
                       child: Container(
-                        width: 38,
-                        height: 38,
+                        width: (sw * 0.09).clamp(34.0, 42.0),
+                        height: (sw * 0.09).clamp(34.0, 42.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: _kBorder),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.arrow_back_rounded,
                           color: _kNavy,
-                          size: 19,
+                          size: (sw * 0.045).clamp(17.0, 20.0),
                         ),
                       ),
                     ),
                     const SizedBox(width: 10),
                     Container(
-                      width: 33,
-                      height: 33,
+                      width: (sw * 0.1).clamp(36.0, 44.0),
+                      height: (sw * 0.1).clamp(36.0, 44.0),
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [_kPrimary, _kPrimaryDark],
-                        ),
-                        borderRadius: BorderRadius.circular(9),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 1.5),
+                          ),
+                        ],
                       ),
-                      child: const Icon(
-                        Icons.favorite,
-                        color: Colors.white,
-                        size: 17,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'assets/logo_without_text.jpeg',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 7),
-                    const Text(
+                    Text(
                       'QuickCare',
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: (sw * 0.045).clamp(16.0, 19.0),
                         fontWeight: FontWeight.bold,
                         color: _kNavy,
                       ),
                     ),
-                    const Text(
+                    Text(
                       ' AI',
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: (sw * 0.045).clamp(16.0, 19.0),
                         fontWeight: FontWeight.w400,
                         color: _kPrimary,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: (sw * 0.07).clamp(20.0, 32.0)),
 
                 // ── Heading ─────────────────────────────────────────
                 Text(
@@ -166,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Sign in to your account',
                   style: TextStyle(fontSize: subtitleFs, color: _kGrey),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: (sw * 0.06).clamp(16.0, 24.0)),
 
                 // ── Phone ────────────────────────────────────────────
                 _FieldLabel('Phone Number'),

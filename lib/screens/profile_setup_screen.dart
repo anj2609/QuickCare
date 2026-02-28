@@ -205,12 +205,17 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     final hPad = (sw * 0.07).clamp(20.0, 32.0);
     final titleFs = (sw * 0.065).clamp(20.0, 28.0);
     final subtitleFs = (sw * 0.035).clamp(12.0, 15.0);
+    final logoSize = (sw * 0.11).clamp(38.0, 48.0);
+    final logoTextFs = (sw * 0.045).clamp(16.0, 19.0);
 
     return Scaffold(
       backgroundColor: _kBg,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: hPad, vertical: 24),
+          padding: EdgeInsets.symmetric(
+            horizontal: hPad,
+            vertical: (sw * 0.06).clamp(16.0, 32.0),
+          ),
           child: Form(
             key: _formKey,
             child: Column(
@@ -220,40 +225,46 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 Row(
                   children: [
                     Container(
-                      width: 36,
-                      height: 36,
+                      width: logoSize,
+                      height: logoSize,
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [_kPrimary, _kPrimaryDark],
-                        ),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(logoSize * 0.26),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                      child: const Icon(
-                        Icons.favorite,
-                        color: Colors.white,
-                        size: 18,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(logoSize * 0.26),
+                        child: Image.asset(
+                          'assets/logo_without_text.jpeg',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const Text(
+                    Text(
                       'QuickCare',
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: logoTextFs,
                         fontWeight: FontWeight.bold,
                         color: _kNavy,
                       ),
                     ),
-                    const Text(
+                    Text(
                       ' AI',
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: logoTextFs,
                         fontWeight: FontWeight.w400,
                         color: _kPrimary,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: (sw * 0.07).clamp(20.0, 32.0)),
 
                 Text(
                   'Complete Profile',
@@ -268,7 +279,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   'Step 3 of 3 · Fill in your medical details',
                   style: TextStyle(fontSize: subtitleFs, color: _kGrey),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: (sw * 0.06).clamp(16.0, 24.0)),
 
                 // ═══ Personal Details ══════════════════════════════
                 _SectionLabel('Personal Details'),
@@ -577,7 +588,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 // ── Complete Registration ────────────────────────
                 SizedBox(
                   width: double.infinity,
-                  height: 52,
+                  height: (sw * 0.12).clamp(50.0, 56.0),
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
@@ -610,10 +621,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                                 color: Colors.white,
                               ),
                             )
-                          : const Text(
+                          : Text(
                               'Complete Registration',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: (sw * 0.04).clamp(15.0, 17.0),
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),

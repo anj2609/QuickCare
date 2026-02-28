@@ -52,49 +52,24 @@ class _StartingScreenState extends State<StartingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final sw = MediaQuery.of(context).size.width;
     final isLast = _page == _total - 1;
+
     return Scaffold(
       backgroundColor: _kBg,
       body: SafeArea(
         child: Column(
           children: [
-            // ── Top bar ──────────────────────────────────────────────
+            // ── Top bar (Simplified to only Skip button) ────────────────
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 12, 0),
+              padding: EdgeInsets.fromLTRB(
+                20,
+                (sw * 0.025).clamp(8, 16),
+                12,
+                0,
+              ),
               child: Row(
                 children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [_kPrimary, _kPrimaryDark],
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(
-                      Icons.favorite,
-                      color: Colors.white,
-                      size: 22,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  const Text(
-                    'QuickCare',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: _kNavy,
-                    ),
-                  ),
-                  const Text(
-                    ' AI',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
-                      color: _kPrimary,
-                    ),
-                  ),
                   const Spacer(),
                   AnimatedOpacity(
                     opacity: isLast ? 0 : 1,
@@ -109,9 +84,12 @@ class _StartingScreenState extends State<StartingScreen> {
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: const Text(
+                      child: Text(
                         'Skip',
-                        style: TextStyle(fontSize: 16, color: _kGrey),
+                        style: TextStyle(
+                          fontSize: (sw * 0.04).clamp(14.0, 16.0),
+                          color: _kGrey,
+                        ),
                       ),
                     ),
                   ),
@@ -130,7 +108,12 @@ class _StartingScreenState extends State<StartingScreen> {
 
             // ── Dots + Button (compact) ──────────────────────────────
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 4, 24, 20),
+              padding: EdgeInsets.fromLTRB(
+                24,
+                4,
+                24,
+                (sw * 0.05).clamp(16.0, 32.0),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -141,10 +124,10 @@ class _StartingScreenState extends State<StartingScreen> {
                       (i) => _Dot(active: i == _page),
                     ),
                   ),
-                  const SizedBox(height: 14),
+                  SizedBox(height: (sw * 0.035).clamp(10.0, 16.0)),
                   SizedBox(
                     width: double.infinity,
-                    height: 48,
+                    height: (sw * 0.12).clamp(48.0, 56.0),
                     child: isLast
                         ? DecoratedBox(
                             decoration: BoxDecoration(
@@ -169,10 +152,10 @@ class _StartingScreenState extends State<StartingScreen> {
                                   borderRadius: BorderRadius.circular(13),
                                 ),
                               ),
-                              child: const Text(
+                              child: Text(
                                 'Get Started',
                                 style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: (sw * 0.04).clamp(15.0, 18.0),
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
@@ -191,18 +174,21 @@ class _StartingScreenState extends State<StartingScreen> {
                                 borderRadius: BorderRadius.circular(13),
                               ),
                             ),
-                            child: const Row(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   'Next',
                                   style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: (sw * 0.04).clamp(15.0, 18.0),
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                SizedBox(width: 6),
-                                Icon(Icons.arrow_forward_rounded, size: 17),
+                                const SizedBox(width: 6),
+                                const Icon(
+                                  Icons.arrow_forward_rounded,
+                                  size: 17,
+                                ),
                               ],
                             ),
                           ),
@@ -241,42 +227,49 @@ class _Page1 extends StatelessWidget {
   const _Page1();
   @override
   Widget build(BuildContext context) {
+    final sw = MediaQuery.of(context).size.width;
+    final logoSize = (sw * 0.35).clamp(100.0, 160.0);
+
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Badge
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            width: logoSize,
+            height: logoSize,
             decoration: BoxDecoration(
-              color: _kPrimary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: _kPrimary.withValues(alpha: 0.25)),
+              borderRadius: BorderRadius.circular(logoSize * 0.22),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 15,
+                  offset: const Offset(0, 6),
+                ),
+              ],
             ),
-            child: const Text(
-              '🤖 AI-Powered Healthcare Platform',
-              style: TextStyle(
-                color: _kPrimaryDark,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(logoSize * 0.22),
+              child: Image.asset(
+                'assets/logo_without_text.jpeg',
+                fit: BoxFit.cover,
               ),
             ),
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: (sw * 0.1).clamp(24.0, 48.0)),
           // Headline
           RichText(
             textAlign: TextAlign.center,
-            text: const TextSpan(
+            text: TextSpan(
               style: TextStyle(
-                fontSize: 33,
+                fontSize: (sw * 0.09).clamp(28.0, 42.0),
                 fontWeight: FontWeight.bold,
                 color: _kNavy,
                 height: 1.2,
               ),
-              children: [
-                TextSpan(text: 'Healthcare made '),
+              children: const [
+                TextSpan(text: 'Healthcare made\n'),
                 TextSpan(
                   text: 'simple',
                   style: TextStyle(color: _kPrimary),
@@ -290,66 +283,8 @@ class _Page1 extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 14),
-          const Text(
-            'Seamlessly connect patients, doctors, labs, and hospitals. '
-            'AI-powered insights, real-time scheduling, and complete medical record management.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, color: _kGrey, height: 1.55),
-          ),
-          const SizedBox(height: 24),
-          // Stats row card
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: _kBorder),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 12,
-                  offset: const Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _MiniStat('👥', 'Patients', '10K+'),
-                Container(width: 1, height: 36, color: _kBorder),
-                _MiniStat('🏥', 'Hospitals', '50+'),
-                Container(width: 1, height: 36, color: _kBorder),
-                _MiniStat('⭐', 'Rating', '4.9'),
-              ],
-            ),
-          ),
         ],
       ),
-    );
-  }
-}
-
-class _MiniStat extends StatelessWidget {
-  final String emoji, label, value;
-  const _MiniStat(this.emoji, this.label, this.value);
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(emoji, style: const TextStyle(fontSize: 20)),
-        const SizedBox(height: 3),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 19,
-            fontWeight: FontWeight.bold,
-            color: _kPrimary,
-          ),
-        ),
-        Text(label, style: const TextStyle(fontSize: 11, color: _kGrey)),
-      ],
     );
   }
 }
@@ -365,6 +300,8 @@ class _Page2 extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    final sw = MediaQuery.of(context).size.width;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -375,29 +312,33 @@ class _Page2 extends StatelessWidget {
             crossAxisCount: 2,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            childAspectRatio: 2.3,
+            mainAxisSpacing: (sw * 0.03).clamp(8.0, 16.0),
+            crossAxisSpacing: (sw * 0.03).clamp(8.0, 16.0),
+            childAspectRatio: (sw > 400) ? 2.5 : 2.2,
             children: _stats
                 .map((s) => _StatCard(value: s.$1, label: s.$2))
                 .toList(),
           ),
-          const SizedBox(height: 28),
-          const Text(
+          SizedBox(height: (sw * 0.08).clamp(20.0, 32.0)),
+          Text(
             'Everything you need\nin one platform',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 28,
+              fontSize: (sw * 0.07).clamp(24.0, 32.0),
               fontWeight: FontWeight.bold,
               color: _kNavy,
-              height: 1.25,
+              height: 1.2,
             ),
           ),
           const SizedBox(height: 12),
-          const Text(
+          Text(
             'A comprehensive solution for modern healthcare management',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14.5, color: _kGrey, height: 1.5),
+            style: TextStyle(
+              fontSize: (sw * 0.035).clamp(12.0, 15.0),
+              color: _kGrey,
+              height: 1.5,
+            ),
           ),
         ],
       ),
@@ -476,34 +417,40 @@ class _Page3 extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    final sw = MediaQuery.of(context).size.width;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Everything you need\nin one platform',
             style: TextStyle(
-              fontSize: 26,
+              fontSize: (sw * 0.065).clamp(22.0, 28.0),
               fontWeight: FontWeight.bold,
               color: _kNavy,
               height: 1.25,
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'A comprehensive solution for modern healthcare management',
-            style: TextStyle(fontSize: 13.5, color: _kGrey, height: 1.4),
+            style: TextStyle(
+              fontSize: (sw * 0.035).clamp(12.0, 14.0),
+              color: _kGrey,
+              height: 1.4,
+            ),
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: (sw * 0.045).clamp(12.0, 20.0)),
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            childAspectRatio: 0.95,
+            mainAxisSpacing: (sw * 0.03).clamp(8.0, 16.0),
+            crossAxisSpacing: (sw * 0.03).clamp(8.0, 16.0),
+            childAspectRatio: (sw > 400) ? 1.05 : 0.9,
             children: _features
                 .map((f) => _FeatureCard(icon: f.$1, title: f.$2, body: f.$3))
                 .toList(),
@@ -588,6 +535,9 @@ class _Page4 extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    final sw = MediaQuery.of(context).size.width;
+    final iconSize = (sw * 0.22).clamp(70.0, 100.0);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -595,8 +545,8 @@ class _Page4 extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 90,
-            height: 90,
+            width: iconSize,
+            height: iconSize,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -607,30 +557,34 @@ class _Page4 extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: _kPrimary.withValues(alpha: 0.25)),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.health_and_safety_outlined,
-              size: 46,
+              size: iconSize * 0.5,
               color: _kPrimary,
             ),
           ),
-          const SizedBox(height: 20),
-          const Text(
+          SizedBox(height: (sw * 0.05).clamp(16.0, 24.0)),
+          Text(
             'Trusted by\nHealthcare Providers',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 28,
+              fontSize: (sw * 0.07).clamp(24.0, 32.0),
               fontWeight: FontWeight.bold,
               color: _kNavy,
-              height: 1.25,
+              height: 1.2,
             ),
           ),
           const SizedBox(height: 12),
-          const Text(
+          Text(
             'Your data is protected with enterprise-grade security standards used by leading healthcare organisations.',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, color: _kGrey, height: 1.55),
+            style: TextStyle(
+              fontSize: (sw * 0.035).clamp(12.5, 15.0),
+              color: _kGrey,
+              height: 1.5,
+            ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: (sw * 0.06).clamp(18.0, 28.0)),
           ..._badges.map(
             (b) => Container(
               width: double.infinity,
@@ -667,8 +621,8 @@ class _Page4 extends StatelessWidget {
                   Expanded(
                     child: Text(
                       b,
-                      style: const TextStyle(
-                        fontSize: 14.5,
+                      style: TextStyle(
+                        fontSize: (sw * 0.038).clamp(13.5, 16.0),
                         fontWeight: FontWeight.w600,
                         color: _kNavy,
                       ),
